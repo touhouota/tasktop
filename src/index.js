@@ -1,3 +1,0 @@
-function hogeHoge() {
-  return 'hoge';
-}
