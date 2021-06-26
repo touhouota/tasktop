@@ -4,10 +4,16 @@
         "es6": true
     },
     "extends": [
+        "plugin:react/recommended",
         "airbnb",
         "eslint:recommended",
+        "airbnb/hooks",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "prettier"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -24,6 +30,7 @@
     },
     "plugins": [
         "react",
+        "prettier",
         "@typescript-eslint"
     ],
     "rules": {
