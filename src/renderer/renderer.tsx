@@ -1,10 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-const App = () => (
+//  Components
+import CabinetCompornent from "./scripts/cabinetComponents.tsx";
+
+// StyleSheet
+import "./style/main.scss";
+
+ReactDOM.render(
   <div>
-    <h1>Hello, world!</h1>
-  </div>
+    <CabinetCompornent position={"top"} />
+    <CabinetCompornent position={"left"} />
+    <CabinetCompornent position={"right"} />
+  </div>,
+  document.getElementById("container")
 );
-
-ReactDOM.render(<App />, document.getElementById('app'));

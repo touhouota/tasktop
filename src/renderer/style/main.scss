@@ -1,0 +1,22 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "./partials/cabinets_base";
+@import "./partials/open_cabinet";
+
+body {
+  margin: 0;
+
+  .main_button {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    background-color: purple;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+
+    text-align: center;
+    line-height: 100px;
+  }
+}

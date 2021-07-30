@@ -1,0 +1,124 @@
+@use "sass:math";
+@use "sass:list";
+
+$top_cabinet_width: max(80vw, 80vh);
+$top_cabinet_height: max(50vw, 50vh);
+$top_cabinet_middle_horizontal_position: calc(50vw - #{list.slash($top_cabinet_width, 2)});
+
+$side_cabinet_width: min(30vw, 30vh);
+$side_cabinet_height: min(70vw, 70vh);
+$side_cabinet_middle_vertical_position: calc(50vh - #{list.slash($side_cabinet_height, 2)});
+
+$cabinet_tab_long_edge: 300px;
+$cabinet_tab_short_edge: 30px;
+$cabinet_tab_middle_position: calc($cabinet_tab_long_edge - list.slash($cabinet_tab_long_edge, 2));
+$radius_size: 30px;
+
+.hide_top_content {
+  height: $cabinet_tab_short_edge !important;
+}
+
+.hide_side_content {
+  width: $cabinet_tab_short_edge !important;
+}
+
+.hide {
+  display: none;
+}
+
+.cabinet_base {
+  position: absolute;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  text-align: center;
+}
+
+.cabinet_content_base {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: gray;
+  border: 0;
+}
+
+.top_cabinet {
+  @extend .cabinet_base;
+
+  top: 0;
+  left: $top_cabinet_middle_horizontal_position;
+
+  width: $top_cabinet_width;
+  height: $top_cabinet_height;
+
+  flex-direction: column-reverse;
+
+  .cabinet_tab {
+    width: $cabinet_tab_long_edge;
+    height: $cabinet_tab_short_edge;
+
+    background-color: aqua;
+    border-radius: 0 0 $radius_size $radius_size;
+  }
+
+  .cabinet_content {
+    @extend .cabinet_content_base;
+  }
+}
+
+.left_cabinet {
+  @extend .cabinet_base;
+
+  top: $side_cabinet_middle_vertical_position;
+  left: 0;
+
+  width: $side_cabinet_width;
+  height: $side_cabinet_height;
+
+
+  flex-direction: row-reverse;
+
+  .cabinet_tab {
+    width: $cabinet_tab_short_edge;
+    height: $cabinet_tab_long_edge;
+
+    background-color: blue;
+    border-radius: 0 $radius_size $radius_size 0;
+    writing-mode: vertical-rl;
+  }
+
+  .cabinet_content {
+    @extend .cabinet_content_base;
+
+    left: 0
+  }
+}
+
+.right_cabinet {
+  @extend .cabinet_base;
+
+  top: $side_cabinet_middle_vertical_position;
+  right: 0;
+
+  width: $side_cabinet_width;
+  height: $side_cabinet_height;
+
+
+  .cabinet_tab {
+    width: $cabinet_tab_short_edge;
+    height: $cabinet_tab_long_edge;
+
+    background-color: blueviolet;
+    border-radius: $radius_size 0 0 $radius_size;
+    writing-mode: vertical-rl;
+  }
+
+  .cabinet_content {
+    @extend .cabinet_content_base;
+    right: 0;
+  }
+}

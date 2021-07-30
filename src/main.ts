@@ -1,4 +1,4 @@
-import { BrowserWindow, app, App } from 'electron';
+import { BrowserWindow, app, App } from "electron";
 
 class SampleApp {
     private mainWindow: BrowserWindow | null = null;
@@ -9,9 +9,9 @@ class SampleApp {
 
     constructor(application: App) {
         this.app = application;
-        this.app.on('window-all-closed', this.onWindowAllClosed.bind(this));
-        this.app.on('ready', this.create.bind(this));
-        this.app.on('activate', this.onActivated.bind(this));
+        this.app.on("window-all-closed", this.onWindowAllClosed.bind(this));
+        this.app.on("ready", this.create.bind(this));
+        this.app.on("activate", this.onActivated.bind(this));
     }
 
     private onWindowAllClosed() {
@@ -21,16 +21,16 @@ class SampleApp {
     private create() {
         this.mainWindow = new BrowserWindow({
             width: 800,
-            height: 400,
+            height: 300,
             minWidth: 500,
             minHeight: 200,
             acceptFirstMouse: true,
-            titleBarStyle: 'hidden',
+            titleBarStyle: "hidden",
         });
 
         this.mainWindow.loadURL(this.mainURL);
 
-        this.mainWindow.on('closed', () => {
+        this.mainWindow.on("closed", () => {
             this.mainWindow = null;
         });
     }
