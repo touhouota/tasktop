@@ -4,18 +4,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const main = {
+const base = {
     mode: "development",
-    target: "electron-main",
-    entry: path.join(__dirname, "src", "main"),
-    output: {
-        filename: "main.js",
-        path: path.join(__dirname, "dist"),
-    },
     node: {
         __dirname: false,
         __filename: false
     },
+    devtool: "source-map",
     module: {
         rules: [{
             test: /.ts?$/,
@@ -26,17 +21,35 @@ const main = {
                 path.resolve(__dirname, "node_modules"),
                 path.resolve(__dirname, ".yarn")
             ],
-            use: ["babel-loader"]
+            use: "babel-loader"
+        }, {
+            test: /.json$/,
+            include: [
+                path.resolve(__dirname, "src"),
+            ],
+            exclude: [
+                path.resolve(__dirname, ".yarn")
+            ],
         }],
     },
     resolve: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"]
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".json"]
+    },
+};
+
+const main = {
+    ...base,
+    target: "electron-main",
+    entry: path.join(__dirname, "src", "main"),
+    output: {
+        filename: "main.js",
+        path: path.join(__dirname, "dist"),
     },
 };
 
 const renderer = {
-    mode: "development",
-    target: "web",
+    ...base,
+    target: "electron-renderer",
     entry: path.join(__dirname, "src", "renderer", "renderer"),
     output: {
         filename: "renderer.js",
@@ -53,10 +66,10 @@ const renderer = {
                 use: ["babel-loader"],
                 include: [
                     path.resolve(__dirname, "src"),
-                    path.resolve(__dirname, "node_modules"),
                     path.resolve(__dirname, ".yarn")
                 ],
-            }, {
+            },
+            {
                 test: /\.scss$/,
                 use: [
                     {
@@ -70,7 +83,7 @@ const renderer = {
                         options: {
                             sourceMap: true,
                             importLoaders: 2,
-                          },
+                            },
                     },
                     {
                         loader: "sass-loader",
@@ -113,6 +126,16 @@ const renderer = {
     }
 };
 
+const preload = {
+    ...base,
+    target: "electron-preload",
+    entry: path.resolve(__dirname, "src", "preload"),
+    output: {
+        filename: "preload.js",
+        path: path.resolve(__dirname, "dist")
+    }
+}
+
 module.exports = [
-    main, renderer
+    main, renderer, preload
 ];
