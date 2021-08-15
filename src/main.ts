@@ -1,13 +1,9 @@
 import { BrowserWindow, app, App, ipcMain } from "electron";
 import path from "path";
-import { google } from "googleapis";
 import { IpcMainEvent } from "electron/main";
-import {
-    client_id,
-    client_secret,
-    redirect_uris,
-} from "./main/google/client_secret.json";
-import SpreadsheetService from "./main/google/SpreadsheetService";
+import SpreadsheetService from "./main/SpreadsheetService";
+import OAuthClient from "./main/OAuthClient";
+import { GoogleApis } from "googleapis";
 
 class SampleApp {
     private mainWindow: BrowserWindow | null = null;
@@ -64,7 +60,7 @@ class SampleApp {
         this.create();
 
         ipcMain.on("auth-start", async (event) => {
-            const client = initOAuthClient();
+            const client = new OAuthClient();
             const url = client.generateAuthUrl({
                 scope: [
                     // 参考： https://developers.google.com/sheets/api/guides/authorizing
@@ -74,21 +70,7 @@ class SampleApp {
                 ],
             });
 
-            const authWindow = new BrowserWindow({
-                x: 60,
-                y: 60,
-                useContentSize: true,
-            });
-            const code = await getOAuthCodeByInteraction(authWindow, url);
-
-            if (!code) {
-                throw new Error("get code fail.");
-            }
-
-            const response = await client.getToken(code);
-            event.reply("auth-success", response.tokens);
-
-            client.setCredentials(response.tokens);
+            await client.authorize(url, event);
             const sheetService = new SpreadsheetService(client);
             sheetService.initialize();
         });
@@ -100,39 +82,6 @@ class SampleApp {
         }
     }
 }
-
-const initOAuthClient = () =>
-    new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
-
-const getOAuthCodeByInteraction = (
-    interactionWindow: BrowserWindow,
-    authPageURL: string
-): Promise<string | null> => {
-    interactionWindow.loadURL(authPageURL);
-
-    return new Promise((resolve, reject) => {
-        const onClosed = () => {
-            reject("Interaction ended intentionally...");
-        };
-
-        interactionWindow.on("closed", onClosed);
-        interactionWindow.on("page-title-updated", (event: IpcMainEvent) => {
-            const url = new URL(event.sender.getURL());
-            if (url.searchParams.get("approvalCode")) {
-                interactionWindow.removeListener("closed", onClosed);
-                interactionWindow.close();
-                return resolve(url.searchParams.get("approvalCode"));
-            }
-
-            const oAuthStatus = url.searchParams.get("response") || "";
-            if (oAuthStatus.startsWith("error=")) {
-                interactionWindow.removeListener("closed", onClosed);
-                interactionWindow.close();
-                return reject(url.searchParams.get("response"));
-            }
-        });
-    });
-};
 
 const getResourceDirectory = () =>
     process.env.NODE_ENV === "development"

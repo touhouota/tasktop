@@ -10,7 +10,9 @@ const base = {
         __dirname: false,
         __filename: false
     },
-    devtool: "source-map",
+    output: {
+        clean: true,
+    },
     module: {
         rules: [{
             test: /.ts?$/,
