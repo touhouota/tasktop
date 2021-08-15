@@ -16,7 +16,9 @@ class CabinetComponent extends React.Component<Props, State> {
     super(props);
     this.state = { isOpened: false };
 
-    this.styleClassList = [`${this.props.position}` + "_cabinet"];
+    const { position } = this.props;
+
+    this.styleClassList = [`${position}_cabinet`];
     this.cabinetToggle = this.cabinetToggle.bind(this);
     this.renderClasses = this.renderClasses.bind(this);
   }
@@ -28,12 +30,14 @@ class CabinetComponent extends React.Component<Props, State> {
   }
 
   renderClasses(): string {
-    if (this.state.isOpened) {
+    const { isOpened } = this.state;
+    const { position } = this.props;
+    if (isOpened) {
       this.styleClassList = this.styleClassList.filter(
         (item) => item.match(/hide/) === null
       );
 
-      if (this.props.position === "top") {
+      if (position === "top") {
         this.styleClassList.push("open_cabinet_top");
       } else {
         this.styleClassList.push("open_cabinet_side");
@@ -43,7 +47,7 @@ class CabinetComponent extends React.Component<Props, State> {
         (item) => item.match(/open/) === null
       );
 
-      if (this.props.position === "top") {
+      if (position === "top") {
         this.styleClassList.push("hide_top_content");
       } else {
         this.styleClassList.push("hide_side_content");
@@ -54,17 +58,15 @@ class CabinetComponent extends React.Component<Props, State> {
   }
 
   render() {
-    console.log(`parent: ${this.state.isOpened}`);
+    const { position } = this.props;
+    const { isOpened } = this.state;
 
     return (
       <div className={this.renderClasses()}>
         <div className="cabinet_tab" onClick={this.cabinetToggle}>
-          {this.props.position} is {this.state.isOpened ? "Open" : "Close"}
+          {position} is {isOpened ? "Open" : "Close"}
         </div>
-        <CabinetContentComponent
-          position={this.props.position}
-          isOpened={this.state.isOpened}
-        />
+        <CabinetContentComponent position={position} isOpened={isOpened} />
       </div>
     );
   }

@@ -5,7 +5,7 @@ type Props = {
   isOpened: boolean;
 };
 
-class CabinetContentComponent extends React.Component<Props, {}> {
+class CabinetContentComponent extends React.Component<Props> {
   styleClassList: Array<string>;
 
   constructor(props: Props) {
@@ -16,10 +16,10 @@ class CabinetContentComponent extends React.Component<Props, {}> {
     this.renderClasses = this.renderClasses.bind(this);
   }
 
-  renderClasses() {
-    console.log(`content: ${this.props.isOpened}`);
+  renderClasses(): string {
+    const { isOpened } = this.props;
 
-    if (this.props.isOpened) {
+    if (isOpened) {
       this.styleClassList = this.styleClassList.filter(
         (item) => item.match(/hide/) === null
       );
@@ -31,9 +31,9 @@ class CabinetContentComponent extends React.Component<Props, {}> {
   }
 
   render() {
-    return (
-      <div className={this.renderClasses()}>{this.props.position} content</div>
-    );
+    const { position } = this.props;
+
+    return <div className={this.renderClasses()}>{position} content</div>;
   }
 }
 
