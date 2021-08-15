@@ -14,7 +14,7 @@ contextBridge.exposeInMainWorld("myAPI", {
         ipcRenderer.on("auth-success", async (event, tokens) => {
             // login buttonを隠す
             const button = document.getElementById("login_button");
-            if(button) {
+            if (button) {
                 button.style.display = "none";
             }
 
@@ -22,4 +22,4 @@ contextBridge.exposeInMainWorld("myAPI", {
             console.log("token: ", tokens);
         });
     },
-})
+});

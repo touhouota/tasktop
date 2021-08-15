@@ -1,8 +1,12 @@
 import { BrowserWindow, app, App, ipcMain } from "electron";
 import path from "path";
 import { google } from "googleapis";
-import { client_id, client_secret, redirect_uris } from "./main/google/client_secret.json";
-import { IpcRendererEvent } from "electron/main";
+import { IpcMainEvent } from "electron/main";
+import {
+    client_id,
+    client_secret,
+    redirect_uris,
+} from "./main/google/client_secret.json";
 import SpreadsheetService from "./main/google/SpreadsheetService";
 
 class SampleApp {
@@ -35,17 +39,18 @@ class SampleApp {
             titleBarStyle: "hidden",
             webPreferences: {
                 defaultFontFamily: {
-                    standard: "Noto Sans CJK JP"
+                    standard: "Noto Sans CJK JP",
                 },
                 nodeIntegration: false,
                 contextIsolation: true,
                 sandbox: true,
                 preload: path.resolve(getResourceDirectory(), "preload.js"),
-            }
+            },
         });
-        console.log(path.resolve(getResourceDirectory(), "preload.js"));
 
-        this.mainWindow.loadFile(path.resolve(getResourceDirectory(), "scripts/index.html"))
+        this.mainWindow.loadFile(
+            path.resolve(getResourceDirectory(), "scripts/index.html")
+        );
 
         // DevToolを開く
         this.mainWindow.webContents.openDevTools();
@@ -65,24 +70,28 @@ class SampleApp {
                     // 参考： https://developers.google.com/sheets/api/guides/authorizing
                     "https://www.googleapis.com/auth/spreadsheets",
                     // https://developers.google.com/drive/api/v3/about-auth?hl=en
-                    "https://www.googleapis.com/auth/drive"
-                ]
+                    "https://www.googleapis.com/auth/drive",
+                ],
             });
 
-            const authWindow = new BrowserWindow({ x: 60, y: 60, useContentSize: true });
+            const authWindow = new BrowserWindow({
+                x: 60,
+                y: 60,
+                useContentSize: true,
+            });
             const code = await getOAuthCodeByInteraction(authWindow, url);
 
-            if(!code) {
+            if (!code) {
                 throw new Error("get code fail.");
             }
 
-            let response = await client.getToken(code);
+            const response = await client.getToken(code);
             event.reply("auth-success", response.tokens);
 
             client.setCredentials(response.tokens);
             const sheetService = new SpreadsheetService(client);
             sheetService.initialize();
-        })
+        });
     }
 
     private onActivated() {
@@ -90,45 +99,44 @@ class SampleApp {
             this.create();
         }
     }
-};
+}
 
-const initOAuthClient = () => {
-    return new google.auth.OAuth2(
-        client_id, client_secret, redirect_uris[0]
-    )
-};
+const initOAuthClient = () =>
+    new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
-const getOAuthCodeByInteraction = (interactionWindow: any, authPageURL: string): Promise<string|null> => {
+const getOAuthCodeByInteraction = (
+    interactionWindow: BrowserWindow,
+    authPageURL: string
+): Promise<string | null> => {
     interactionWindow.loadURL(authPageURL);
 
     return new Promise((resolve, reject) => {
         const onClosed = () => {
             reject("Interaction ended intentionally...");
-        }
+        };
 
         interactionWindow.on("closed", onClosed);
-        interactionWindow.on("page-title-updated", (event: { sender: { getURL: () => string; }; }) => {
+        interactionWindow.on("page-title-updated", (event: IpcMainEvent) => {
             const url = new URL(event.sender.getURL());
-            if(url.searchParams.get("approvalCode")) {
+            if (url.searchParams.get("approvalCode")) {
                 interactionWindow.removeListener("closed", onClosed);
                 interactionWindow.close();
                 return resolve(url.searchParams.get("approvalCode"));
             }
-            if((url.searchParams.get("response") || "").startsWith("error=")) {
+
+            const oAuthStatus = url.searchParams.get("response") || "";
+            if (oAuthStatus.startsWith("error=")) {
                 interactionWindow.removeListener("closed", onClosed);
                 interactionWindow.close();
                 return reject(url.searchParams.get("response"));
             }
-        })
-    })
+        });
+    });
 };
 
-const getResourceDirectory = () => {
-    return process.env.NODE_ENV === "development"
+const getResourceDirectory = () =>
+    process.env.NODE_ENV === "development"
         ? path.join(process.cwd(), "dist")
-        : path.join(process.cwd(), "dist")
-        // : path.join(process.resourcesPath, "app.asar.unpacked", "dist")
-}
-
-
+        : path.join(process.cwd(), "dist");
+// : path.join(process.resourcesPath, "app.asar.unpacked", "dist")
 const MyApp: SampleApp = new SampleApp(app);

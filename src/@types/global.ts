@@ -1,7 +1,7 @@
 interface Window {
     // preload
     myAPI: {
-        electron: boolean,
-        setOAuthButtonEvent: () => void,
-    }
+        electron: boolean;
+        setOAuthButtonEvent: () => void;
+    };
 }
