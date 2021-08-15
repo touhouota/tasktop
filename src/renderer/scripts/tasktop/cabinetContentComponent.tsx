@@ -12,7 +12,6 @@ class CabinetContentComponent extends React.Component<Props> {
     super(props);
 
     this.styleClassList = ["cabinet_content"];
-
     this.renderClasses = this.renderClasses.bind(this);
   }
 
