@@ -55,7 +55,8 @@
     "typescript": "^4.3.5",
     "webpack": "^5.45.1",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "yarn": "^1.22.11"
   },
   "scripts": {
     "eslint": "eslint src/**/*.{js,jsx,ts,tsx}",
