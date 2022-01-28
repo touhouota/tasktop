@@ -1,4 +1,4 @@
-import { GoogleApis, google, oauth2_v2 } from "googleapis";
+import { google } from "googleapis";
 
 type FileResponse = {
     kind: string;
@@ -45,16 +45,15 @@ const MASTER_DATA = {
 };
 
 export default class SpreadsheetService {
-    auth: GoogleApis["oauth2_v2"];
+    auth: google.auth.OAuth2;
     driveClient: GoogleApis["drive_v3"];
     sheetClient: GoogleApis["sheet_v4"];
     sheetId: string | null;
 
-    constructor(auth: GoogleApis["oauth2_v2"]) {
-        this.auth = auth;
-        google.options({ auth: this.auth });
-        this.driveClient = google.drive({ version: "v3", auth: this.auth });
-        this.sheetClient = google.sheets({ version: "v4", auth: this.auth });
+    constructor(auth: GoogleApis["auth"]["OAuth2"]) {
+        google.options({ auth: auth });
+        this.driveClient = google.drive({ version: "v3", auth: auth });
+        this.sheetClient = google.sheets({ version: "v4", auth: auth });
         this.sheetId = null;
     }
 
@@ -129,7 +128,7 @@ export default class SpreadsheetService {
             });
     }
 
-    async createMasterFolder(): Promise<string | null> {
+    private async createMasterFolder(): Promise<string | null> {
         return await this.driveClient.files
             .create({
                 resource: MASTER_DATA.FOLDER_STRUCTURE,
@@ -151,7 +150,7 @@ export default class SpreadsheetService {
             });
     }
 
-    async createTaskListSheet(): Promise<string | null> {
+    private async createTaskListSheet(): Promise<string | null> {
         // NOTE: spreadsheets.createはドライブ直下に作成する
         return this.sheetClient.spreadsheets
             .create({
@@ -173,7 +172,7 @@ export default class SpreadsheetService {
             });
     }
 
-    async moveToTaskListSheet(
+    private async moveToTaskListSheet(
         sheetId: string,
         moveFolderId: string
     ): Promise<true | false> {
