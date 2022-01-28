@@ -10,7 +10,7 @@
     "@babel/runtime": "^7.14.8",
     "@yarnpkg/plugin-compat": "^3.0.0-rc.12",
     "@yarnpkg/pnpify": "^3.0.0-rc.13",
-    "electron": "^13.1.7",
+    "electron": "^13.3.0",
     "googleapis": "^84.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
