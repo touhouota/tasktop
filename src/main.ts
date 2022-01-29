@@ -45,7 +45,7 @@ class SampleApp {
         });
 
         this.mainWindow.loadFile(
-            path.resolve(getResourceDirectory(), "scripts/index.html")
+            path.resolve(getResourceDirectory(), "scripts/index.html"),
         );
 
         // DevToolを開く

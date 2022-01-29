@@ -34,7 +34,7 @@ class CabinetComponent extends React.Component<Props, State> {
     const { position } = this.props;
     if (isOpened) {
       this.styleClassList = this.styleClassList.filter(
-        (item) => item.match(/hide/) === null
+        (item) => item.match(/hide/) === null,
       );
 
       if (position === "top") {
@@ -44,7 +44,7 @@ class CabinetComponent extends React.Component<Props, State> {
       }
     } else {
       this.styleClassList = this.styleClassList.filter(
-        (item) => item.match(/open/) === null
+        (item) => item.match(/open/) === null,
       );
 
       if (position === "top") {
