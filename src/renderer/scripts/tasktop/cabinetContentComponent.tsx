@@ -20,7 +20,7 @@ class CabinetContentComponent extends React.Component<Props> {
 
     if (isOpened) {
       this.styleClassList = this.styleClassList.filter(
-        (item) => item.match(/hide/) === null
+        (item) => item.match(/hide/) === null,
       );
     } else {
       this.styleClassList.push("hide");

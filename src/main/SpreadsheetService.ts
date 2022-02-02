@@ -86,11 +86,11 @@ export default class SpreadsheetService {
             .list(masterFolderQuery)
             .then(
                 (response: DriveResponse): DriveResponse["data"] =>
-                    response.data
+                    response.data,
             )
             .then(
                 (data: DriveResponse["data"]): Array<FileResponse> | false =>
-                    data.files
+                    data.files,
             )
             .then((files: Array<FileResponse>): string | null => {
                 // 結果が1であればすでにある
@@ -136,7 +136,7 @@ export default class SpreadsheetService {
             })
             .then(
                 (response: DriveResponse): DriveResponse["data"] =>
-                    response.data
+                    response.data,
             )
             .then((data: FileResponse): string | null => {
                 if (data.id) {
@@ -158,7 +158,8 @@ export default class SpreadsheetService {
                 fields: "spreadsheetId",
             })
             .then(
-                (response: SpreadsheetResponse): SheetsResponse => response.data
+                (response: SpreadsheetResponse): SheetsResponse =>
+                    response.data,
             )
             .then((data: SheetsResponse): string | null => {
                 if (data.spreadsheetId) {
@@ -174,7 +175,7 @@ export default class SpreadsheetService {
 
     private async moveToTaskListSheet(
         sheetId: string,
-        moveFolderId: string
+        moveFolderId: string,
     ): Promise<true | false> {
         const params = {
             fileId: sheetId,
@@ -185,7 +186,7 @@ export default class SpreadsheetService {
             .update(params)
             .then(
                 (response: DriveResponse): DriveResponse["data"] =>
-                    response.data
+                    response.data,
             )
             .then((data: FileResponse): true | false => {
                 if (data.id === this.sheetId) return true;

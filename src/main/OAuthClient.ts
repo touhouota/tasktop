@@ -23,7 +23,7 @@ export default class OAuthClient extends google.auth.OAuth2 {
     constructor(
         clientId: string = client_id,
         clientSecret: string = client_secret,
-        redirectUri: string = redirect_uris[0]
+        redirectUri: string = redirect_uris[0],
     ) {
         super(clientId, clientSecret, redirectUri);
         this.tokenBasePath = path.resolve(app.getAppPath(), "credentials");
@@ -101,7 +101,7 @@ export default class OAuthClient extends google.auth.OAuth2 {
 
 const getOAuthCodeByInteraction = async (
     interactionWindow: BrowserWindow,
-    authPageURL: string
+    authPageURL: string,
 ): Promise<string | null> => {
     interactionWindow.loadURL(authPageURL);
 
