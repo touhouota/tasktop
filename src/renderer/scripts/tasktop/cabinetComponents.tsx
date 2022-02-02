@@ -3,6 +3,7 @@ import CabinetContentComponent from "./cabinetContentComponent";
 
 type Props = {
   position: string;
+  tasks?: Array<Task>,
 };
 
 type State = {
@@ -54,6 +55,8 @@ class CabinetComponent extends React.Component<Props, State> {
       }
     }
 
+    this.styleClassList = Array.from(new Set(this.styleClassList));
+
     return this.styleClassList.join(" ");
   }
 
@@ -66,7 +69,7 @@ class CabinetComponent extends React.Component<Props, State> {
         <div className="cabinet_tab" onClick={this.cabinetToggle}>
           {position} is {isOpened ? "Open" : "Close"}
         </div>
-        <CabinetContentComponent position={position} isOpened={isOpened} />
+        <CabinetContentComponent position={position} isOpened={isOpened} tasks={this.props.tasks} />
       </div>
     );
   }
