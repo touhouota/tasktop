@@ -17,7 +17,8 @@ class CabinetComponent extends React.Component<Props, State> {
     super(props);
     this.state = { isOpened: false };
 
-    const { position } = this.props;
+    const position  = props.position;
+    console.log(position);
 
     this.styleClassList = [`${position}_cabinet`];
     this.cabinetToggle = this.cabinetToggle.bind(this);
@@ -32,7 +33,7 @@ class CabinetComponent extends React.Component<Props, State> {
 
   renderClasses(): string {
     const { isOpened } = this.state;
-    const { position } = this.props;
+    const position  = this.props.position;
     if (isOpened) {
       this.styleClassList = this.styleClassList.filter(
         (item) => item.match(/hide/) === null,

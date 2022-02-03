@@ -1,20 +1,23 @@
 import React from "react";
 
 type Props = {
-
+    name: string,
+    status: TaskStatus
 }
 
 type State = {
     status: TaskStatus
 }
 
-export class TaskItem extends React.Component<Props, State> {
-    constructor(props: Props) {
-        console.log("TaskItem");
+class TaskItem extends React.Component<Props, State> {
+    name: string;
 
+    constructor(props: Props) {
         super(props);
+
+        this.name = props.name;
         this.state = {
-            status: 0
+            status: props.status
         }
     }
 
@@ -23,13 +26,13 @@ export class TaskItem extends React.Component<Props, State> {
     }
 
     render() {
-        const taskName = "定型タスク";
-
         return (
             <div className="task_item" data-status={this.state.status}>
-                <p className="task_name">{taskName}</p>
+                <p className="task_name">{this.name}</p>
                 <p>status: {this.state.status}</p>
             </div>
         );
     }
 }
+
+export default TaskItem;

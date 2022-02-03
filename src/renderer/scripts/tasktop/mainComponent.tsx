@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Ref } from "react";
 
 type Props = {
   hide: boolean
@@ -11,6 +11,7 @@ type State = {
 
 class MainComponent extends React.Component<Props, State> {
   appender: Function
+  appendTaskName?: HTMLInputElement | null;
 
   constructor(props: Props) {
     super(props);
@@ -21,13 +22,16 @@ class MainComponent extends React.Component<Props, State> {
   }
 
   addTask() {
-    console.log("addTask");
-    this.appender({name: "追加テスト"});
+    if(!this.appendTaskName) return null;
+
+    this.appender({name: this.appendTaskName.value});
+    this.appendTaskName.value = "";
   }
 
   render() {
     return(
       <div className="main_button">
+        <input type="text" ref={ input => {this.appendTaskName = input}} />
         <button onClick={this.addTask}>タスク追加</button>
       </div>
     );

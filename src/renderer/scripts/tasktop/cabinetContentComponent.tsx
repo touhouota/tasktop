@@ -30,18 +30,20 @@ class CabinetContentComponent extends React.Component<Props, State> {
     let tempClassList = [];
 
     if (isOpened) {
-      this.styleClassList = this.styleClassList.filter(
+      tempClassList = this.styleClassList.filter(
         (item) => item.match(/hide/) === null,
       );
     } else {
       tempClassList.push("hide");
     }
 
+    this.styleClassList = Array.from(new Set(tempClassList));
+
     return this.styleClassList.join(" ");
   }
 
   createTasks() {
-    return this.state.tasks.map( task => <li>{task.name}</li>)
+    return this.state.tasks.map(task => <TaskItem name={task.name} status={task.status} />)
   }
 
   render() {
