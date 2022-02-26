@@ -1,16 +1,16 @@
-@use "sass:math";
+@use "sass:list";
 
 $top_cabinet_width: max(80vw, 80vh);
 $top_cabinet_height: max(50vw, 50vh);
-$top_cabinet_middle_horizontal_position: calc(50vw - #{math.div($top_cabinet_width, 2)});
+$top_cabinet_middle_horizontal_position: calc(50vw - #{list.slash($top_cabinet_width, 2)});
 
 $side_cabinet_width: min(30vw, 30vh);
 $side_cabinet_height: min(70vw, 70vh);
-$side_cabinet_middle_vertical_position: calc(50vh - #{math.div($side_cabinet_height, 2)});
+$side_cabinet_middle_vertical_position: calc(50vh - #{list.slash($side_cabinet_height, 2)});
 
 $cabinet_tab_long_edge: 300px;
 $cabinet_tab_short_edge: 30px;
-$cabinet_tab_middle_position: calc($cabinet_tab_long_edge - #{math.div($cabinet_tab_long_edge, 2)});
+$cabinet_tab_middle_position: calc($cabinet_tab_long_edge - #{list.slash($cabinet_tab_long_edge, 2)});
 $radius_size: 30px;
 
 .hide_top_content {
