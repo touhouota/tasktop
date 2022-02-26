@@ -1,4 +1,5 @@
-import { google } from "googleapis";
+import { google, GoogleApis } from "googleapis";
+import OAuthClient from "./OAuthClient"
 
 type FileResponse = {
     kind: string;
@@ -45,12 +46,11 @@ const MASTER_DATA = {
 };
 
 export default class SpreadsheetService {
-    auth: google.auth.OAuth2;
     driveClient: GoogleApis["drive_v3"];
     sheetClient: GoogleApis["sheet_v4"];
     sheetId: string | null;
 
-    constructor(auth: GoogleApis["auth"]["OAuth2"]) {
+    constructor(auth: OAuthClient) {
         google.options({ auth: auth });
         this.driveClient = google.drive({ version: "v3", auth: auth });
         this.sheetClient = google.sheets({ version: "v4", auth: auth });

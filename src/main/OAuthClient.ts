@@ -3,6 +3,7 @@ import fs from "fs";
 import { app } from "electron";
 import { BrowserWindow, IpcMain, IpcMainEvent } from "electron";
 import { google, GoogleApis } from "googleapis";
+import { OAuth2Client } from "google-auth-library";
 import {
     client_id,
     client_secret,
@@ -17,7 +18,7 @@ type AuthResult = {
     expiry_date: number;
 };
 
-export default class OAuthClient extends google.auth.OAuth2 {
+export default class OAuthClient extends OAuth2Client {
     tokenBasePath: string;
 
     constructor(

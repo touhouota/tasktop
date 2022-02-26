@@ -1,9 +1,7 @@
 import { BrowserWindow, app, App, ipcMain } from "electron";
 import path from "path";
-import { IpcMainEvent } from "electron/main";
 import SpreadsheetService from "./main/SpreadsheetService";
 import OAuthClient from "./main/OAuthClient";
-import { GoogleApis } from "googleapis";
 
 class SampleApp {
     private mainWindow: BrowserWindow | null = null;
