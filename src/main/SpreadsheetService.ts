@@ -1,27 +1,6 @@
 import { google, GoogleApis } from "googleapis";
 import OAuthClient from "./OAuthClient"
 
-type FileResponse = {
-    kind: string;
-    id: string;
-    name: string;
-    mineType: string;
-};
-
-type DriveResponse = {
-    data: {
-        files: Array<FileResponse>;
-    };
-};
-
-type SheetsResponse = {
-    spreadsheetId: string;
-};
-
-type SpreadsheetResponse = {
-    data: SheetsResponse;
-};
-
 // minetype
 // https://developers.google.com/drive/api/v3/mime-types?hl=en
 const MASTER_DATA = {
@@ -126,6 +105,10 @@ export default class SpreadsheetService {
                 console.log("error:", error);
                 return null;
             });
+    }
+
+    createTask(task: Task): {result: boolean, task: Task} {
+        return { result: true, task: task}
     }
 
     private async createMasterFolder(): Promise<string | null> {
