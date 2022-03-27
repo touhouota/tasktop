@@ -15,13 +15,13 @@ describe("タスク作成", () => {
         service = new SpreadsheetService(credentials);
     })
 
-    test("タスク作る", () => {
+    test("タスク作る", async () => {
         let task = {
             name: "task",
             status: 0
         }
 
-        let {result, task: addedTask} = service.createTask(task);
+        let {result, task: addedTask} = await service.createTask(task);
         expect(result).toBeTruthy();
         expect(addedTask).toStrictEqual(task);
     });

@@ -79,6 +79,11 @@ class SampleApp {
             this.create();
         }
     }
+
+    saveTask(task: Task) {
+        let {result, _task} = SpreadsheetService.createTask(task);
+
+    }
 }
 
 const getResourceDirectory = () =>

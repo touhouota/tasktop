@@ -107,8 +107,27 @@ export default class SpreadsheetService {
             });
     }
 
-    createTask(task: Task): {result: boolean, task: Task} {
-        return { result: true, task: task}
+    async createTask(task: Task): Promise<{ result: boolean; task: Task | null; }> {
+        const resource = {
+            values: [0, task.name, task.status]
+        }
+        const request = {
+            spreadsheetId: this.sheetId,
+            range: "B1",
+            valueInputOption: "USER_ENTERED",
+            insertDataOption: "INSERT_ROWS",
+            includeValuesInResponse: true,
+            resource
+        }
+
+        try {
+            const result = (await this.sheetClient.spreadsheets.values.append(request)).data;
+            console.table(result);
+            return {result: true, task: null};
+        } catch (err) {
+            console.log(err);
+            return {result: false, task: null}
+        }
     }
 
     private async createMasterFolder(): Promise<string | null> {
