@@ -117,5 +117,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# keep
+!.gitkeep
+
 # secrets
-src/main/google/client_secret.json
+src/main/google/
