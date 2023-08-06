@@ -2,7 +2,8 @@ import path from "path";
 import fs from "fs";
 import { app } from "electron";
 import { BrowserWindow, IpcMain, IpcMainEvent } from "electron";
-import { google, GoogleApis } from "googleapis";
+import { google } from "googleapis";
+
 import {
     client_id,
     client_secret,

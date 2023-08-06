@@ -1,25 +1,5 @@
-import { google } from "googleapis";
-
-type FileResponse = {
-    kind: string;
-    id: string;
-    name: string;
-    mineType: string;
-};
-
-type DriveResponse = {
-    data: {
-        files: Array<FileResponse>;
-    };
-};
-
-type SheetsResponse = {
-    spreadsheetId: string;
-};
-
-type SpreadsheetResponse = {
-    data: SheetsResponse;
-};
+import { google, GoogleApis } from "googleapis";
+import OAuthClient from "./OAuthClient"
 
 // minetype
 // https://developers.google.com/drive/api/v3/mime-types?hl=en
@@ -45,12 +25,11 @@ const MASTER_DATA = {
 };
 
 export default class SpreadsheetService {
-    auth: google.auth.OAuth2;
     driveClient: GoogleApis["drive_v3"];
     sheetClient: GoogleApis["sheet_v4"];
     sheetId: string | null;
 
-    constructor(auth: GoogleApis["auth"]["OAuth2"]) {
+    constructor(auth: OAuthClient) {
         google.options({ auth: auth });
         this.driveClient = google.drive({ version: "v3", auth: auth });
         this.sheetClient = google.sheets({ version: "v4", auth: auth });
@@ -126,6 +105,29 @@ export default class SpreadsheetService {
                 console.log("error:", error);
                 return null;
             });
+    }
+
+    async createTask(task: Task): Promise<{ result: boolean; task: Task | null; }> {
+        const resource = {
+            values: [0, task.name, task.status]
+        }
+        const request = {
+            spreadsheetId: this.sheetId,
+            range: "B1",
+            valueInputOption: "USER_ENTERED",
+            insertDataOption: "INSERT_ROWS",
+            includeValuesInResponse: true,
+            resource
+        }
+
+        try {
+            const result = (await this.sheetClient.spreadsheets.values.append(request)).data;
+            console.table(result);
+            return {result: true, task: null};
+        } catch (err) {
+            console.log(err);
+            return {result: false, task: null}
+        }
     }
 
     private async createMasterFolder(): Promise<string | null> {

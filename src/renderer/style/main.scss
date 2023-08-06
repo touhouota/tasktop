@@ -1,8 +1,11 @@
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
+
+// My defined Sass
 @import "./partials/cabinets_base";
 @import "./partials/open_cabinet";
+@import "./partials/task";
 
 body {
   margin: 0;
